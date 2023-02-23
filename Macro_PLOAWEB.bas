@@ -50,9 +50,9 @@ Sub Macro_PLOAWEB()
     Call TB_IMP_NATUREZA_REC(29)
     Call TB_IMP_NATUREZA_PTRES(30)
     Call TB_IMP_NE_2018_6(31)
-    Call TB_IMP_NE_2018_7(32)
+    Call TB_IMP_NE_2023_0(32)
     Call TB_IMP_NE_2019_4(33)
-    Call TB_IMP_NE_2019_5(34)
+    Call TB_IMP_NE_2023_1(34)
     Call TB_IMP_NE_2020_2(35)
     Call TB_IMP_NE_2020_3(36)
     Call TB_IMP_NE_2021_0(37)
@@ -194,8 +194,8 @@ ConferirColunasValores:
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Select
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "VL_Orc_Ini"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 3), Selection.End(xlDown)).NumberFormat = "@"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 3), Selection.End(xlDown)).HorizontalAlignment = xlHAlignLeft
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 3), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 3), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 3), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
     If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value <> 10 Then
@@ -578,8 +578,8 @@ ConferirColunasValores:
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Select
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = "VL_Orc_Ini"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).NumberFormat = "@"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).HorizontalAlignment = xlHAlignLeft
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
     If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value <> 10 Then
@@ -4059,6 +4059,10 @@ Sub TB_IMP_CREDITOS(lm As Integer)
             'Incrementar o contador de linhas do WBArquivo
             iLinha = iLinha + 1
             
+            If iLinha = 168 Then
+                iLinha = 168
+            End If
+            
             'Armazenar a informação da rubrica da linha em questão
             sFuncional = FormatarFuncional(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value)
             sAno = Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value
@@ -4085,6 +4089,7 @@ Sub TB_IMP_CREDITOS(lm As Integer)
         'Fim do Loop 1.1: Procurar a primeira linha com os dados (tratamento de arquivos nos quais a legenda possui mais de uma linha)
         Loop Until Len(sFuncional) = 0
         
+        GoSub LimparArquivo
         GoTo SalvarArquivo
     Else
         Exit Sub
@@ -4201,6 +4206,13 @@ FormatarCabecalho:
     Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Orc_Aut"
     Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Can"
         
+: Return
+
+LimparArquivo:
+    Range(Cells(iLinha, 1), Cells(Rows.Count, 1)).EntireRow.Select
+    Selection.Delete Shift:=xlDown
+    Range(Cells(1, 14), Cells(1, Columns.Count)).EntireColumn.Select
+    Selection.Delete Shift:=xlToRight
 : Return
 
 SalvarArquivo:
@@ -5027,8 +5039,8 @@ ConferirColunasValores:
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Select
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = "VL_Provisao_Recebida"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).NumberFormat = "@"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).HorizontalAlignment = xlHAlignLeft
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
     If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value <> 16 Then
@@ -5135,6 +5147,9 @@ Sub TB_IMP_CORFIN_NE_DIARIO(lm As Integer)
         
         'APAGANDO A SEGUNDA LINHA DE CABEÇALHO: SOMENTE ARQUIVOS COM MAIS DE UMA LINHA NO CABEÇALHO
         Rows(2).Delete
+        
+        'APAGANDO A QUARTA COLUNA
+        Columns(4).Delete
                        
         'Inicializar o contador de linhas do WBArquivo
         iLinha = 1
@@ -5143,12 +5158,16 @@ Sub TB_IMP_CORFIN_NE_DIARIO(lm As Integer)
         '1)Ano, 2)DT_Emissao, 3)CodEspecie, 4)NomeEspecie, 5)VL_Empenhado
         
         GoSub FormatarCabecalho
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 2), Selection.End(xlDown)).NumberFormat = "yyyy/mm/dd"
-             
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 5), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 5), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 5), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-        
+        Columns(2).NumberFormat = "yyyy/mm/dd"
+        Columns(2).HorizontalAlignment = xlHAlignLeft
+        Columns(2).VerticalAlignment = xlVAlignTop
+        Columns(3).NumberFormat = "@"
+        Columns(3).HorizontalAlignment = xlHAlignLeft
+        Columns(3).VerticalAlignment = xlVAlignTop
+        Columns(4).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Columns(4).HorizontalAlignment = xlHAlignRight
+        Columns(4).VerticalAlignment = xlVAlignTop
+                
         'Loop 1.1: Loop nas linhas de dados do arquivo
         Do
         
@@ -5156,41 +5175,14 @@ Sub TB_IMP_CORFIN_NE_DIARIO(lm As Integer)
             iLinha = iLinha + 1
                                                             
             'se existe valor empenhado vamos guardar
-            If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "NAO SE APLICA" Then
-               Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "EMPENHO DE DESPESA"
-               If (Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "-9") Or (Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "'-9") Then
-                  Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "1"
-               End If
+            If (Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "-9") Or (Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "'-9") Then
+               Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "1"
             End If
-            Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).NumberFormat = "0"
-            If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "ANULACAO DE EMPENHO" Then
-               Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "ANULAÇÃO DE EMPENHO"
-            End If
-            If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "REFORCO DE EMPENHO" Then
-               Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "REFORÇO DE EMPENHO"
-            End If
-            If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "ESTORNO DA ANULACAO DO EMPENHO" Then
-               Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "ESTORNO DA ANULAÇÃO DO EMPENHO"
-            End If
-            
         
         'Fim do Loop 1.1: Procurar a primeira linha com os dados (tratamento de arquivos nos quais a legenda possui mais de uma linha)
         Loop Until Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value) = 0
-        
-        'preparando para eliminar as linhas de valor zerado
-        sLinha = iLinha
-        iLinha = 2
-        Do While iLinha <= sLinha
-           If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = 0 Then
-              Rows(iLinha).Delete
-           End If
-           iLinha = iLinha + 1
-        Loop
-        
-        'preparando para eliminar coluna com descricao
-        Workbooks(sArquivo).Worksheets(1).Cells(1, 4).EntireColumn.Select
-        Selection.Delete
                         
+        GoSub LimparArquivo
         GoTo SalvarArquivo
     Else
         Exit Sub
@@ -5202,17 +5194,20 @@ FormatarCabecalho:
     Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = "Ano"
     Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value = "Emissão"
     Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "Código"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "Espécie"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = "VL_Empenhado"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "VL_Empenhado"
             
 : Return
 
-SalvarArquivo:
-    'Apagar colunas
-    Columns("E:E").Select
-    Range(Selection, Selection.End(xlToRight)).Select
-    Selection.Delete Shift:=xlToLeft
+LimparArquivo:
+    Range(Cells(iLinha, 1), Cells(Rows.Count, 1)).EntireRow.Select
+    Selection.Delete Shift:=xlDown
+    Range(Cells(1, 5), Cells(1, Columns.Count)).EntireColumn.Select
+    Selection.Delete Shift:=xlToRight
+    
+: Return
 
+SalvarArquivo:
+    
     'Renomear a Planilha Ativa com o mesmo nome do Arquivo (sem o .xlsx - 5 caracteres finais)
     sPlanWBArquivo = Workbooks(sWBMacro).Worksheets(sPlanAtiva).Range("B1").Value & "_" & sArquivo
     Workbooks(sArquivo).Activate
@@ -7614,7 +7609,7 @@ DeuErro:
     Exit Sub
 End Sub
 
-Sub TB_IMP_NE_2018_7(lm As Integer)
+Sub TB_IMP_NE_2023_0(lm As Integer)
        
     On Error GoTo DeuErro
     
@@ -8264,7 +8259,7 @@ DeuErro:
     Exit Sub
 End Sub
 
-Sub TB_IMP_NE_2019_5(lm As Integer)
+Sub TB_IMP_NE_2023_1(lm As Integer)
        
     On Error GoTo DeuErro
     
