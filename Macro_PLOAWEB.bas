@@ -1,5 +1,3 @@
-Option Explicit 'determina que todas as variáveis precisam ser declaradas
-
 'Declarando as variáveis string que controlam informações do Workbook ativo e do Arquivo Processado
 Public sWBMacro As String, sPlanAtiva As String, sCaminho As String, sArquivo As String, sPlanWBArquivo As String, _
        sFuncional As String, sContaCorrente As String, sCodMT As String, sFonteSOF As String, sCelulaNatureza As String, _
@@ -1357,9 +1355,9 @@ Sub TB_IMP_BLOQUEIO_NATUREZA(lm As Integer)
         iLinha = 1
         
         'Estrutura do arquivo:
-        '1)PT, 2)Ano Lançamento, 3)PTRES, 4) RPrimario, 5) Natureza, 6) FonteSOF, 7) CatEco, 8) Grupo de Despesa(GND),
-        '9) Modalidade de Despesa, 10) Elemento, 11) VL_Cred_Bloq_Rema, 12) VL_Cred_Bloq_Contido, 13) VL_Cred_Bloq_SOF
-        '14) VL_Cred_Bloq_RemaSOF, 15) VL_Cred_Bloq_Controle, 16) VL_Cred_Bloq_RP, 17) VL_Cred_Bloq_PreEmp
+        '1)PT, 2)Ano Lançamento, 3)PTRES, 4) Natureza, 5) FonteSOF, 6) CatEco, 7) Grupo de Despesa(GND),
+        '8) Modalidade de Despesa, 9) Elemento, 10) VL_Cred_Bloq_Rema, 11) VL_Cred_Bloq_Contido, 12) VL_Cred_Bloq_SOF
+        '13) VL_Cred_Bloq_RemaSOF, 14) VL_Cred_Bloq_Controle, 15) VL_Cred_Bloq_RP, 16) VL_Cred_Bloq_PreEmp
         
         GoSub ConferirColunasValores
         GoSub FormatarCabecalho
@@ -1372,23 +1370,23 @@ Sub TB_IMP_BLOQUEIO_NATUREZA(lm As Integer)
             
             'Armazenar a informação da rubrica da linha em questão
             sFuncional = FormatarFuncional(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value)
-            sNatureza = Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value, 1, 1) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value, 2, 1) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value, 3, 2) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value, 5, 2)
-            sFonteSOF = Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value, 1, 4) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value, 5, 6)
+            sNatureza = Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 1, 1) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 2, 1) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 3, 2) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 5, 2)
+            sFonteSOF = Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value, 1, 4) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value, 5, 6)
                         
             If sFuncional <> "" Then
                 'Armazenar a informação da rubrica da linha em questão
                 Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = sFuncional
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = sNatureza
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = sFonteSOF
+                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = sNatureza
+                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = sFonteSOF
                 
                 'atribuindo valor zero onde não existe nada
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = 0
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = 0
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = 0
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = 0
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = 0
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = 0
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value = 0
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value = 0
             End If
         
         'Fim do Loop 1.1: Procurar a primeira linha com os dados (tratamento de arquivos nos quais a legenda possui mais de uma linha)
@@ -1400,47 +1398,56 @@ Sub TB_IMP_BLOQUEIO_NATUREZA(lm As Integer)
     
 ConferirColunasValores:
    'apenas formatando a coluna Fonte Sof
-    Columns(6).NumberFormat = "@"
-    Columns(6).HorizontalAlignment = xlHAlignLeft
-    Columns(6).VerticalAlignment = xlVAlignTop
+    Columns(5).NumberFormat = "@"
+    Columns(5).HorizontalAlignment = xlHAlignLeft
+    Columns(5).VerticalAlignment = xlVAlignTop
    
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value <> "622120101" Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value <> "622120101" Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = "VL_Cred_Bloq_Rema"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 10), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 10), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 10), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value <> "622120104" Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Cred_Bloq_Rema"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Cred_Bloq_Contido"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 11), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 11), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 11), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value <> "622120104" Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value <> "622120105" Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Cred_Bloq_Contido"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Cred_Bloq_SOF"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value <> "622120105" Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value <> "622120106" Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Bloq_SOF"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Bloq_RemaSOF"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value <> "622120106" Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value <> "622120107" Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Cred_Bloq_RemaSOF"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Cred_Bloq_RP"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value <> "622120107" Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value <> "622120108" Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Select
@@ -1449,48 +1456,37 @@ ConferirColunasValores:
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value <> "622120108" Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value <> "622120200" Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value = "VL_Cred_Bloq_RP"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value = "VL_Cred_Bloq_PreEmp"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 16), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 16), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 16), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value <> "622120200" Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value = "VL_Cred_Bloq_PreEmp"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 17), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 17), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 17), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
     
 : Return
 
 FormatarCabecalho:
        
-        '14) VL_Cred_Bloq_RemaSOF, 15) VL_Cred_Bloq_Controle, 16) VL_Cred_Bloq_RP, 17) VL_Cred_Bloq_PreEmp
     'Itens a mudar no cabeçalho
     Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = "Funcional"
     Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value = "Ano"
     Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "PTRES"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "RP"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = "Natureza"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = "FonteSOF"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 7).Value = "CatEco"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).Value = "GND"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = "Modalidade"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = "Elemento"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Cred_Bloq_Rema"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Cred_Bloq_Contido"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Bloq_SOF"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Cred_Bloq_RemaSOF"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Cred_Bloq_Controle"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value = "VL_Cred_Bloq_RP"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value = "VL_Cred_Bloq_PreEmp"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "Natureza"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = "FonteSOF"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = "CatEco"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 7).Value = "GND"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).Value = "Modalidade"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = "Elemento"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = "VL_Cred_Bloq_Rema"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Cred_Bloq_Contido"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Cred_Bloq_SOF"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Bloq_RemaSOF"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Cred_Bloq_Controle"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Cred_Bloq_RP"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value = "VL_Cred_Bloq_PreEmp"
 : Return
 
 SalvarArquivo:
@@ -1883,546 +1879,7 @@ ConferirColunasValores:
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Cred_Bloq_RemaSOF"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value <> "622120107" Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Bloq_Controle"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value <> "622120108" Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Cred_Bloq_RP"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value <> "622120200" Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Cred_Bloq_PreEmp"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    
-: Return
-
-FormatarCabecalho:
-       
-    'Itens a mudar no cabeçalho
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = "Funcional"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value = "Ano"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "PTRES"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "UO"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = "Modalidade"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = "GND"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 7).Value = "Fonte"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).Value = "RP"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = "VL_Cred_Bloq_Rema"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = "VL_Cred_Bloq_Contido"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Cred_Bloq_SOF"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Cred_Bloq_RemaSOF"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Bloq_Controle"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Cred_Bloq_RP"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Cred_Bloq_PreEmp"
-: Return
-
-SalvarArquivo:
-    'Renomear a Planilha Ativa com o mesmo nome do Arquivo (sem o .xlsx - 5 caracteres finais)
-    sPlanWBArquivo = Workbooks(sWBMacro).Worksheets(sPlanAtiva).Range("B1").Value & "_" & sArquivo
-    Workbooks(sArquivo).Activate
-    ActiveSheet.Name = Left(sPlanWBArquivo, Len(sPlanWBArquivo) - 5)
-        
-    'Fechar o WBarquivo, salvando como
-    DoEvents
-    Application.StatusBar = "Fechando o arquivo " & sArquivo & "..."
-    Workbooks(sArquivo).SaveAs Filename:=sCaminho & "\" & sPlanWBArquivo, FileFormat:=xlOpenXMLWorkbook, CreateBackup:=False
-    Workbooks(sPlanWBArquivo).Close SaveChanges:=False
-        
-    Exit Sub
-    
-DeuErro:
-    MsgBox "O Arquivo " + sArquivo + " gerou erro: " + Error, vbCritical, "Erro na Execução da Macro"
-    Exit Sub
-End Sub
-
-Sub TB_IMP_LOA_DETALHADA(lm As Integer)
-       
-    On Error GoTo DeuErro
-    
-    'Armazenar as informações iniciais sobre o arquivo que será processado
-    sArquivo = Workbooks(sWBMacro).Worksheets(sPlanAtiva).Cells(lm, 1)
-    'Primeira linha do arquivo contendo o cabeçalho
-    iLinhaCabecalho = Workbooks(sWBMacro).Worksheets(sPlanAtiva).Cells(lm, 3)
-    
-    If UCase(Workbooks(sWBMacro).Worksheets(sPlanAtiva).Cells(lm, 2)) = "SIM" Then
-    
-        'Abrir o WBArquivo em questão
-        Application.StatusBar = "Abrindo " & sArquivo
-        DoEvents  'Passa operação para o Sistema operacional
-        Workbooks.Open Filename:=sCaminho & "\" & sArquivo, UpdateLinks:=False
-        
-        'Desmesclar qualquer célula
-        Rows.Select
-        Selection.UnMerge
-                
-        'Apagar as linhas sobre a legenda do WBArquivo
-        Rows("1:" & iLinhaCabecalho - 1).Select
-        Selection.Delete Shift:=xlUp
-        
-        'APAGANDO A SEGUNDA LINHA DE CABEÇALHO: SOMENTE ARQUIVOS COM MAIS DE UMA LINHA NO CABEÇALHO
-        Rows(2).Delete
-        
-        'Inicializar o contador de linhas do WBArquivo
-        iLinha = 1
-                   
-        'Estrutura do arquivo:
-        '1)Funcional, 2)Ano, 3) PTRES, 4) UO, 5) Modalidade, 6) GND, 7)Fonte, 8) RP
-        '9) 8 VL_PLOA, 10)9(VL_Orc_Ini), 11)10(VL_Cred_Sup), 12)11(VL_Cred_Esp), 13)12(VL_Cred_Ext), 14)13(VL_Orc_Aut), 15)14(VL_Cred_Can),
-        '16)19(VL_Disponivel), 17)29(VL_Empenhado), 18)31(VL_Liquidado), 19)34(VL_Pago),
-                
-        GoSub ConferirColunasValores
-        GoSub FormatarCabecalho
-        
-        'Loop 1.1: Loop nas linhas de dados do arquivo
-        Do
-        
-            'Incrementar o contador de linhas do WBArquivo
-            iLinha = iLinha + 1
-            
-            'Armazenar a informação da rubrica da linha em questão
-            sFuncional = FormatarFuncional(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value)
-            sFonteSOF = Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 7).Value, 1, 4) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 7).Value, 5, 6)
-                                    
-            If sFuncional <> "" Then
-                'Armazenar a informação da rubrica da linha em questão
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = sFuncional
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 7).Value = CStr(sFonteSOF)
-                'atribuindo valor zero onde não existe nada
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = 0
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = 0
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = 0
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = 0
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = 0
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = 0
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = 0
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value = 0
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value = 0
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value = 0
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value = 0
-            End If
-        
-        'Fim do Loop 1.1: Procurar a primeira linha com os dados (tratamento de arquivos nos quais a legenda possui mais de uma linha)
-        Loop Until Len(sFuncional) = 0
-        
-        GoTo SalvarArquivo
-    Else
-        Exit Sub
-    End If
-    
-ConferirColunasValores:
-    'apenas formatando a coluna Fonte Sof
-    Columns(7).NumberFormat = "@"
-    Columns(7).HorizontalAlignment = xlHAlignLeft
-    Columns(7).VerticalAlignment = xlVAlignTop
-    
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value <> 8 Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = "VL_PLOA"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).HorizontalAlignment = xlHAlignLeft
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value <> 9 Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = "VL_Orc_Ini"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 10), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 10), Selection.End(xlDown)).HorizontalAlignment = xlHAlignLeft
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 10), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value <> 10 Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Cred_Sup"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 11), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 11), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 11), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value <> 11 Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Cred_Esp"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value <> 12 Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Ext"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value <> 13 Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Orc_Aut"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value <> 14 Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Cred_Can"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value <> 19 Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value = "VL_Disponivel"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 16), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 16), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 16), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value <> 29 Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value = "VL_Empenhado"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 17), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 17), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 17), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value <> 31 Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value = "VL_Liquidado"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 18), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 18), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 18), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value <> 34 Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value = "VL_Pago"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 19), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 19), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 19), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-     
-: Return
-   
-FormatarCabecalho:
-       
-    'Itens a mudar no cabeçalho
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = "Funcional"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value = "Ano"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "PTRES"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "UO"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = "Modalidade"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = "GND"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 7).Value = "Fonte"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).Value = "RP"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = "VL_PLOA"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = "VL_Orc_Ini"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Cred_Sup"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Cred_Esp"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Ext"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Orc_Aut"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Cred_Can"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value = "VL_Disponivel"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value = "VL_Empenhado"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value = "VL_Liquidado"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value = "VL_Pago"
-        
-: Return
-
-SalvarArquivo:
-    'Renomear a Planilha Ativa com o mesmo nome do Arquivo (sem o .xlsx - 5 caracteres finais)
-    sPlanWBArquivo = Workbooks(sWBMacro).Worksheets(sPlanAtiva).Range("B1").Value & "_" & sArquivo
-    Workbooks(sArquivo).Activate
-    ActiveSheet.Name = Left(sPlanWBArquivo, Len(sPlanWBArquivo) - 5)
-        
-    'Fechar o WBarquivo, salvando como
-    DoEvents
-    Application.StatusBar = "Fechando o arquivo " & sArquivo & "..."
-    Workbooks(sArquivo).SaveAs Filename:=sCaminho & "\" & sPlanWBArquivo, FileFormat:=xlOpenXMLWorkbook, CreateBackup:=False
-    Workbooks(sPlanWBArquivo).Close SaveChanges:=False
-               
-    Exit Sub
-    
-DeuErro:
-    MsgBox "O Arquivo " + sArquivo + " gerou erro: " + Error, vbCritical, "Erro na Execução da Macro"
-    Exit Sub
-End Sub
-
-
-
-Sub TB_IMP_HISTORICO_PGTO(lm As Integer)
-       
-    On Error GoTo DeuErro
-    
-    'Armazenar as informações iniciais sobre o arquivo que será processado
-    sArquivo = Workbooks(sWBMacro).Worksheets(sPlanAtiva).Cells(lm, 1)
-    'Primeira linha do arquivo contendo o cabeçalho
-    iLinhaCabecalho = Workbooks(sWBMacro).Worksheets(sPlanAtiva).Cells(lm, 3)
-    
-    If UCase(Workbooks(sWBMacro).Worksheets(sPlanAtiva).Cells(lm, 2)) = "SIM" Then
-    
-        'Abrir o WBArquivo em questão
-        Application.StatusBar = "Abrindo " & sArquivo
-        DoEvents  'Passa operação para o Sistema operacional
-        Workbooks.Open Filename:=sCaminho & "\" & sArquivo, UpdateLinks:=False
-        
-        'Desmesclar qualquer célula
-        Rows.Select
-        Selection.UnMerge
-                
-        'Apagar as linhas sobre a legenda do WBArquivo
-        Rows("1:" & iLinhaCabecalho - 1).Select
-        Selection.Delete Shift:=xlUp
-                      
-        'Inicializar o contador de linhas do WBArquivo
-        iLinha = 1
-        
-        'Estrutura do arquivo:
-        '1)ContaCorrente, 2)Ano, 3)Mês, 4)DESPESAS PAGAS (CONTROLE EMPENHO), 5)RESTOS A PAGAR PAGOS (PROC E N PROC)
-        
-        GoSub CriandoColunas
-        GoSub ConferirColunasValores
-        GoSub FormatarCabecalho
-        lSeq = 0             'Zerando a sequencia de registro no primeiro arquivo da série
-        
-        'Loop 1.1: Loop nas linhas de dados do arquivo
-        Do
-            'Incrementar o contador de linhas do WBArquivo
-            iLinha = iLinha + 1
-            
-            'Incrementar o contador de registro do arquivo
-            lSeq = lSeq + 1
-            
-            'Armazenar a informação da Nota de Empenho
-            sContaCorrente = Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value
-            If sContaCorrente <> "" Then
-                'Armazenar a informação da rubrica da linha em questão
-                sAno = Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 5, 4)
-                sMes = FormatarMes(Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 1, 3))
-                
-                'Armazenar as informações modificadas
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = lSeq
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value = sContaCorrente
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = sAno
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = sMes
-                
-                'atribuindo valor zero onde não existe nada
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = 0
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = 0
-            End If
-        
-        'Fim do Loop 1.1
-        Loop Until Len(sContaCorrente) = 0
-        
-        'Voltar o contado de linha interno
-        lSeq = lSeq - 1
-        
-        GoTo SalvarArquivo
-    Else
-        Exit Sub
-    End If
-    
-CriandoColunas:
-    'Inserir coluna empurrando para direita
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).EntireColumn.Insert
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Select
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = "Sequencia"
-    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 1), Selection.End(xlDown)).NumberFormat = "0"
-    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 1), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 1), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).EntireColumn.Insert
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Select
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "Ano"
-    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 3), Selection.End(xlDown)).NumberFormat = "@"
-    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 3), Selection.End(xlDown)).HorizontalAlignment = xlHAlignLeft
-    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 3), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-
-: Return
-    
-ConferirColunasValores:
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value <> "DESPESAS PAGAS (CONTROLE EMPENHO)" Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = "VL_Pago"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 5), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 5), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 5), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value <> "RESTOS A PAGAR PAGOS (PROC E N PROC)" Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = "RP_Pago"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 6), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 6), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 6), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-            
-: Return
-
-FormatarCabecalho:
-       
-    'Itens a mudar no cabeçalho
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = "Sequência"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value = "ContaCorrente"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "Ano"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "Mês"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = "VL_Pago"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = "RP_Pago"
-       
-: Return
-
-SalvarArquivo:
-    'Renomear a Planilha Ativa com o mesmo nome do Arquivo (sem o .xlsx - 5 caracteres finais)
-    sPlanWBArquivo = Workbooks(sWBMacro).Worksheets(sPlanAtiva).Range("B1").Value & "_" & sArquivo
-    Workbooks(sArquivo).Activate
-    ActiveSheet.Name = Left(sPlanWBArquivo, Len(sPlanWBArquivo) - 5)
-        
-    'Fechar o WBarquivo, salvando como
-    DoEvents
-    Application.StatusBar = "Fechando o arquivo " & sArquivo & "..."
-    Workbooks(sArquivo).SaveAs Filename:=sCaminho & "\" & sPlanWBArquivo, FileFormat:=xlOpenXMLWorkbook, CreateBackup:=False
-    Workbooks(sPlanWBArquivo).Close SaveChanges:=False
-        
-    Exit Sub
-    
-DeuErro:
-    MsgBox "O Arquivo " + sArquivo + " gerou erro: " + Error, vbCritical, "Erro na Execução da Macro"
-    Exit Sub
-End Sub
-
-
-Sub TB_IMP_HISTORICO_PGTO2(lm As Integer)
-       
-    On Error GoTo DeuErro
-    
-    'Armazenar as informações iniciais sobre o arquivo que será processado
-    sArquivo = Workbooks(sWBMacro).Worksheets(sPlanAtiva).Cells(lm, 1)
-    'Primeira linha do arquivo contendo o cabeçalho
-    iLinhaCabecalho = Workbooks(sWBMacro).Worksheets(sPlanAtiva).Cells(lm, 3)
-    
-    If UCase(Workbooks(sWBMacro).Worksheets(sPlanAtiva).Cells(lm, 2)) = "SIM" Then
-    
-        'Abrir o WBArquivo em questão
-        Application.StatusBar = "Abrindo " & sArquivo
-        DoEvents  'Passa operação para o Sistema operacional
-        Workbooks.Open Filename:=sCaminho & "\" & sArquivo, UpdateLinks:=False
-        
-        'Desmesclar qualquer célula
-        Rows.Select
-        Selection.UnMerge
-                
-        'Apagar as linhas sobre a legenda do WBArquivo
-        Rows("1:" & iLinhaCabecalho - 1).Select
-        Selection.Delete Shift:=xlUp
-                      
-        'Inicializar o contador de linhas do WBArquivo
-        iLinha = 1
-        
-        'Estrutura do arquivo:
-        '1)ContaCorrente, 2)Ano, 3)Mês, 4)DESPESAS PAGAS (CONTROLE EMPENHO), 5)RESTOS A PAGAR PAGOS (PROC E N PROC)
-        
-        GoSub CriandoColunas
-        GoSub ConferirColunasValores
-        GoSub FormatarCabecalho
-        
-        'Loop 1.1: Loop nas linhas de dados do arquivo
-        Do
-            'Incrementar o contador de linhas do WBArquivo
-            iLinha = iLinha + 1
-            
-            'Incrementar o contador de registro do arquivo
-            lSeq = lSeq + 1
-            
-            'Armazenar a informação da Nota de Empenho
-            sContaCorrente = Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value
-            If sContaCorrente <> "" Then
-                'Armazenar a informação da rubrica da linha em questão
-                sAno = Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 5, 4)
-                sMes = FormatarMes(Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 1, 3))
-                
-                'Armazenar as informações modificadas
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = lSeq
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value = sContaCorrente
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = sAno
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = sMes
-                
-                'atribuindo valor zero onde não existe nada
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = 0
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = 0
-            End If
-        
-        'Fim do Loop 1.1
-        Loop Until Len(sContaCorrente) = 0
-        GoTo SalvarArquivo
-    Else
-        Exit Sub
-    End If
-    
-CriandoColunas:
-    'Inserir coluna empurrando para direita
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).EntireColumn.Insert
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Select
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = "Sequencia"
-    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 1), Selection.End(xlDown)).NumberFormat = "0"
-    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 1), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 1), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).EntireColumn.Insert
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Select
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "Ano"
-    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 3), Selection.End(xlDown)).NumberFormat = "@"
-    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 3), Selection.End(xlDown)).HorizontalAlignment = xlHAlignLeft
-    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 3), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-
-: Return
-    
-ConferirColunasValores:
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value <> "DESPESAS PAGAS (CONTROLE EMPENHO)" Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = "VL_Pago"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 5), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 5), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 5), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value <> "RESTOS A PAGAR PAGOS (PROC E N PROC)" Then
-        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).rir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Select
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = "RP_Pago"
@@ -3433,7 +2890,546 @@ ConferirColunasValores:
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Select
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = "VL_Orc_Ini"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).NumberFormat = "@"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLiRange(Cells(iLinha + 1, 12), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value <> "622120107" Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Bloq_Controle"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value <> "622120108" Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Cred_Bloq_RP"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value <> "622120200" Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Cred_Bloq_PreEmp"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    
+: Return
+
+FormatarCabecalho:
+       
+    'Itens a mudar no cabeçalho
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = "Funcional"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value = "Ano"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "PTRES"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "UO"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = "Modalidade"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = "GND"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 7).Value = "Fonte"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).Value = "RP"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = "VL_Cred_Bloq_Rema"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = "VL_Cred_Bloq_Contido"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Cred_Bloq_SOF"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Cred_Bloq_RemaSOF"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Bloq_Controle"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Cred_Bloq_RP"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Cred_Bloq_PreEmp"
+: Return
+
+SalvarArquivo:
+    'Renomear a Planilha Ativa com o mesmo nome do Arquivo (sem o .xlsx - 5 caracteres finais)
+    sPlanWBArquivo = Workbooks(sWBMacro).Worksheets(sPlanAtiva).Range("B1").Value & "_" & sArquivo
+    Workbooks(sArquivo).Activate
+    ActiveSheet.Name = Left(sPlanWBArquivo, Len(sPlanWBArquivo) - 5)
+        
+    'Fechar o WBarquivo, salvando como
+    DoEvents
+    Application.StatusBar = "Fechando o arquivo " & sArquivo & "..."
+    Workbooks(sArquivo).SaveAs Filename:=sCaminho & "\" & sPlanWBArquivo, FileFormat:=xlOpenXMLWorkbook, CreateBackup:=False
+    Workbooks(sPlanWBArquivo).Close SaveChanges:=False
+        
+    Exit Sub
+    
+DeuErro:
+    MsgBox "O Arquivo " + sArquivo + " gerou erro: " + Error, vbCritical, "Erro na Execução da Macro"
+    Exit Sub
+End Sub
+
+Sub TB_IMP_LOA_DETALHADA(lm As Integer)
+       
+    On Error GoTo DeuErro
+    
+    'Armazenar as informações iniciais sobre o arquivo que será processado
+    sArquivo = Workbooks(sWBMacro).Worksheets(sPlanAtiva).Cells(lm, 1)
+    'Primeira linha do arquivo contendo o cabeçalho
+    iLinhaCabecalho = Workbooks(sWBMacro).Worksheets(sPlanAtiva).Cells(lm, 3)
+    
+    If UCase(Workbooks(sWBMacro).Worksheets(sPlanAtiva).Cells(lm, 2)) = "SIM" Then
+    
+        'Abrir o WBArquivo em questão
+        Application.StatusBar = "Abrindo " & sArquivo
+        DoEvents  'Passa operação para o Sistema operacional
+        Workbooks.Open Filename:=sCaminho & "\" & sArquivo, UpdateLinks:=False
+        
+        'Desmesclar qualquer célula
+        Rows.Select
+        Selection.UnMerge
+                
+        'Apagar as linhas sobre a legenda do WBArquivo
+        Rows("1:" & iLinhaCabecalho - 1).Select
+        Selection.Delete Shift:=xlUp
+        
+        'APAGANDO A SEGUNDA LINHA DE CABEÇALHO: SOMENTE ARQUIVOS COM MAIS DE UMA LINHA NO CABEÇALHO
+        Rows(2).Delete
+        
+        'Inicializar o contador de linhas do WBArquivo
+        iLinha = 1
+                   
+        'Estrutura do arquivo:
+        '1)Funcional, 2)Ano, 3) PTRES, 4) UO, 5) Modalidade, 6) GND, 7)Fonte, 8) RP
+        '9) 8 VL_PLOA, 10)9(VL_Orc_Ini), 11)10(VL_Cred_Sup), 12)11(VL_Cred_Esp), 13)12(VL_Cred_Ext), 14)13(VL_Orc_Aut), 15)14(VL_Cred_Can),
+        '16)19(VL_Disponivel), 17)29(VL_Empenhado), 18)31(VL_Liquidado), 19)34(VL_Pago),
+                
+        GoSub ConferirColunasValores
+        GoSub FormatarCabecalho
+        
+        'Loop 1.1: Loop nas linhas de dados do arquivo
+        Do
+        
+            'Incrementar o contador de linhas do WBArquivo
+            iLinha = iLinha + 1
+            
+            'Armazenar a informação da rubrica da linha em questão
+            sFuncional = FormatarFuncional(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value)
+            sFonteSOF = Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 7).Value, 1, 4) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 7).Value, 5, 6)
+                                    
+            If sFuncional <> "" Then
+                'Armazenar a informação da rubrica da linha em questão
+                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = sFuncional
+                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 7).Value = CStr(sFonteSOF)
+                'atribuindo valor zero onde não existe nada
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = 0
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = 0
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = 0
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = 0
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = 0
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = 0
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = 0
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value = 0
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value = 0
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value = 0
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value = 0
+            End If
+        
+        'Fim do Loop 1.1: Procurar a primeira linha com os dados (tratamento de arquivos nos quais a legenda possui mais de uma linha)
+        Loop Until Len(sFuncional) = 0
+        
+        GoTo SalvarArquivo
+    Else
+        Exit Sub
+    End If
+    
+ConferirColunasValores:
+    'apenas formatando a coluna Fonte Sof
+    Columns(7).NumberFormat = "@"
+    Columns(7).HorizontalAlignment = xlHAlignLeft
+    Columns(7).VerticalAlignment = xlVAlignTop
+    
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value <> 8 Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = "VL_PLOA"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).HorizontalAlignment = xlHAlignLeft
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value <> 9 Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = "VL_Orc_Ini"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 10), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 10), Selection.End(xlDown)).HorizontalAlignment = xlHAlignLeft
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 10), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value <> 10 Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Cred_Sup"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 11), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 11), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 11), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value <> 11 Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Cred_Esp"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value <> 12 Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Ext"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value <> 13 Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Orc_Aut"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value <> 14 Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Cred_Can"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value <> 19 Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value = "VL_Disponivel"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 16), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 16), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 16), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value <> 29 Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value = "VL_Empenhado"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 17), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 17), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 17), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value <> 31 Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value = "VL_Liquidado"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 18), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 18), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 18), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value <> 34 Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value = "VL_Pago"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 19), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 19), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 19), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+     
+: Return
+   
+FormatarCabecalho:
+       
+    'Itens a mudar no cabeçalho
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = "Funcional"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value = "Ano"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "PTRES"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "UO"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = "Modalidade"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = "GND"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 7).Value = "Fonte"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).Value = "RP"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = "VL_PLOA"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = "VL_Orc_Ini"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Cred_Sup"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Cred_Esp"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Ext"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Orc_Aut"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Cred_Can"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value = "VL_Disponivel"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value = "VL_Empenhado"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value = "VL_Liquidado"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value = "VL_Pago"
+        
+: Return
+
+SalvarArquivo:
+    'Renomear a Planilha Ativa com o mesmo nome do Arquivo (sem o .xlsx - 5 caracteres finais)
+    sPlanWBArquivo = Workbooks(sWBMacro).Worksheets(sPlanAtiva).Range("B1").Value & "_" & sArquivo
+    Workbooks(sArquivo).Activate
+    ActiveSheet.Name = Left(sPlanWBArquivo, Len(sPlanWBArquivo) - 5)
+        
+    'Fechar o WBarquivo, salvando como
+    DoEvents
+    Application.StatusBar = "Fechando o arquivo " & sArquivo & "..."
+    Workbooks(sArquivo).SaveAs Filename:=sCaminho & "\" & sPlanWBArquivo, FileFormat:=xlOpenXMLWorkbook, CreateBackup:=False
+    Workbooks(sPlanWBArquivo).Close SaveChanges:=False
+               
+    Exit Sub
+    
+DeuErro:
+    MsgBox "O Arquivo " + sArquivo + " gerou erro: " + Error, vbCritical, "Erro na Execução da Macro"
+    Exit Sub
+End Sub
+
+
+
+Sub TB_IMP_HISTORICO_PGTO(lm As Integer)
+       
+    On Error GoTo DeuErro
+    
+    'Armazenar as informações iniciais sobre o arquivo que será processado
+    sArquivo = Workbooks(sWBMacro).Worksheets(sPlanAtiva).Cells(lm, 1)
+    'Primeira linha do arquivo contendo o cabeçalho
+    iLinhaCabecalho = Workbooks(sWBMacro).Worksheets(sPlanAtiva).Cells(lm, 3)
+    
+    If UCase(Workbooks(sWBMacro).Worksheets(sPlanAtiva).Cells(lm, 2)) = "SIM" Then
+    
+        'Abrir o WBArquivo em questão
+        Application.StatusBar = "Abrindo " & sArquivo
+        DoEvents  'Passa operação para o Sistema operacional
+        Workbooks.Open Filename:=sCaminho & "\" & sArquivo, UpdateLinks:=False
+        
+        'Desmesclar qualquer célula
+        Rows.Select
+        Selection.UnMerge
+                
+        'Apagar as linhas sobre a legenda do WBArquivo
+        Rows("1:" & iLinhaCabecalho - 1).Select
+        Selection.Delete Shift:=xlUp
+                      
+        'Inicializar o contador de linhas do WBArquivo
+        iLinha = 1
+        
+        'Estrutura do arquivo:
+        '1)ContaCorrente, 2)Ano, 3)Mês, 4)DESPESAS PAGAS (CONTROLE EMPENHO), 5)RESTOS A PAGAR PAGOS (PROC E N PROC)
+        
+        GoSub CriandoColunas
+        GoSub ConferirColunasValores
+        GoSub FormatarCabecalho
+        lSeq = 0             'Zerando a sequencia de registro no primeiro arquivo da série
+        
+        'Loop 1.1: Loop nas linhas de dados do arquivo
+        Do
+            'Incrementar o contador de linhas do WBArquivo
+            iLinha = iLinha + 1
+            
+            'Incrementar o contador de registro do arquivo
+            lSeq = lSeq + 1
+            
+            'Armazenar a informação da Nota de Empenho
+            sContaCorrente = Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value
+            If sContaCorrente <> "" Then
+                'Armazenar a informação da rubrica da linha em questão
+                sAno = Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 5, 4)
+                sMes = FormatarMes(Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 1, 3))
+                
+                'Armazenar as informações modificadas
+                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = lSeq
+                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value = sContaCorrente
+                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = sAno
+                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = sMes
+                
+                'atribuindo valor zero onde não existe nada
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = 0
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = 0
+            End If
+        
+        'Fim do Loop 1.1
+        Loop Until Len(sContaCorrente) = 0
+        
+        'Voltar o contado de linha interno
+        lSeq = lSeq - 1
+        
+        GoTo SalvarArquivo
+    Else
+        Exit Sub
+    End If
+    
+CriandoColunas:
+    'Inserir coluna empurrando para direita
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).EntireColumn.Insert
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Select
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = "Sequencia"
+    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 1), Selection.End(xlDown)).NumberFormat = "0"
+    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 1), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 1), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).EntireColumn.Insert
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Select
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "Ano"
+    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 3), Selection.End(xlDown)).NumberFormat = "@"
+    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 3), Selection.End(xlDown)).HorizontalAlignment = xlHAlignLeft
+    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 3), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+
+: Return
+    
+ConferirColunasValores:
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value <> "DESPESAS PAGAS (CONTROLE EMPENHO)" Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = "VL_Pago"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 5), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 5), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 5), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value <> "RESTOS A PAGAR PAGOS (PROC E N PROC)" Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = "RP_Pago"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 6), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 6), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 6), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+            
+: Return
+
+FormatarCabecalho:
+       
+    'Itens a mudar no cabeçalho
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = "Sequência"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value = "ContaCorrente"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "Ano"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "Mês"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = "VL_Pago"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = "RP_Pago"
+       
+: Return
+
+SalvarArquivo:
+    'Renomear a Planilha Ativa com o mesmo nome do Arquivo (sem o .xlsx - 5 caracteres finais)
+    sPlanWBArquivo = Workbooks(sWBMacro).Worksheets(sPlanAtiva).Range("B1").Value & "_" & sArquivo
+    Workbooks(sArquivo).Activate
+    ActiveSheet.Name = Left(sPlanWBArquivo, Len(sPlanWBArquivo) - 5)
+        
+    'Fechar o WBarquivo, salvando como
+    DoEvents
+    Application.StatusBar = "Fechando o arquivo " & sArquivo & "..."
+    Workbooks(sArquivo).SaveAs Filename:=sCaminho & "\" & sPlanWBArquivo, FileFormat:=xlOpenXMLWorkbook, CreateBackup:=False
+    Workbooks(sPlanWBArquivo).Close SaveChanges:=False
+        
+    Exit Sub
+    
+DeuErro:
+    MsgBox "O Arquivo " + sArquivo + " gerou erro: " + Error, vbCritical, "Erro na Execução da Macro"
+    Exit Sub
+End Sub
+
+
+Sub TB_IMP_HISTORICO_PGTO2(lm As Integer)
+       
+    On Error GoTo DeuErro
+    
+    'Armazenar as informações iniciais sobre o arquivo que será processado
+    sArquivo = Workbooks(sWBMacro).Worksheets(sPlanAtiva).Cells(lm, 1)
+    'Primeira linha do arquivo contendo o cabeçalho
+    iLinhaCabecalho = Workbooks(sWBMacro).Worksheets(sPlanAtiva).Cells(lm, 3)
+    
+    If UCase(Workbooks(sWBMacro).Worksheets(sPlanAtiva).Cells(lm, 2)) = "SIM" Then
+    
+        'Abrir o WBArquivo em questão
+        Application.StatusBar = "Abrindo " & sArquivo
+        DoEvents  'Passa operação para o Sistema operacional
+        Workbooks.Open Filename:=sCaminho & "\" & sArquivo, UpdateLinks:=False
+        
+        'Desmesclar qualquer célula
+        Rows.Select
+        Selection.UnMerge
+                
+        'Apagar as linhas sobre a legenda do WBArquivo
+        Rows("1:" & iLinhaCabecalho - 1).Select
+        Selection.Delete Shift:=xlUp
+                      
+        'Inicializar o contador de linhas do WBArquivo
+        iLinha = 1
+        
+        'Estrutura do arquivo:
+        '1)ContaCorrente, 2)Ano, 3)Mês, 4)DESPESAS PAGAS (CONTROLE EMPENHO), 5)RESTOS A PAGAR PAGOS (PROC E N PROC)
+        
+        GoSub CriandoColunas
+        GoSub ConferirColunasValores
+        GoSub FormatarCabecalho
+        
+        'Loop 1.1: Loop nas linhas de dados do arquivo
+        Do
+            'Incrementar o contador de linhas do WBArquivo
+            iLinha = iLinha + 1
+            
+            'Incrementar o contador de registro do arquivo
+            lSeq = lSeq + 1
+            
+            'Armazenar a informação da Nota de Empenho
+            sContaCorrente = Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value
+            If sContaCorrente <> "" Then
+                'Armazenar a informação da rubrica da linha em questão
+                sAno = Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 5, 4)
+                sMes = FormatarMes(Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 1, 3))
+                
+                'Armazenar as informações modificadas
+                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = lSeq
+                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value = sContaCorrente
+                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = sAno
+                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = sMes
+                
+                'atribuindo valor zero onde não existe nada
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = 0
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = 0
+            End If
+        
+        'Fim do Loop 1.1
+        Loop Until Len(sContaCorrente) = 0
+        GoTo SalvarArquivo
+    Else
+        Exit Sub
+    End If
+    
+CriandoColunas:
+    'Inserir coluna empurrando para direita
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).EntireColumn.Insert
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Select
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = "Sequencia"
+    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 1), Selection.End(xlDown)).NumberFormat = "0"
+    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 1), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 1), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).EntireColumn.Insert
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Select
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "Ano"
+    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 3), Selection.End(xlDown)).NumberFormat = "@"
+    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 3), Selection.End(xlDown)).HorizontalAlignment = xlHAlignLeft
+    Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 3), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+
+: Return
+    
+ConferirColunasValores:
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value <> "DESPESAS PAGAS (CONTROLE EMPENHO)" Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = "VL_Pago"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 5), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 5), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 5), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value <> "RESTOS A PAGAR PAGOS (PROC E N PROC)" Then
+        'Insenha + 1, 9), Selection.End(xlDown)).HorizontalAlignment = xlHAlignLeft
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
     If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value <> 10 Then
@@ -4975,7 +4971,7 @@ DeuErro:
 End Sub
 
 Sub TB_IMP_DISPONIVELSRE(lm As Integer)
-    Dim sDescricaoPO As String, sPI As String
+    Dim sPI As String
     
     On Error GoTo DeuErro
     
@@ -5006,9 +5002,9 @@ Sub TB_IMP_DISPONIVELSRE(lm As Integer)
         iLinha = 1
                     
         'Estrutura do arquivo:
-        '1)Funcional, 2)Ano, 3)PTRES, 4) UG_Executora, 5)RP, 6)GND, 7)PO, 8)Descrição do PO, 9)PI, 10) Descricao do PI
-        '11)15(VL_Provisao_Recebida), 12)16(VL_Provisao_Concedida), 13)18(VL_Destacado), 14)19(VL_Disponivel),
-        '15)20(VL_Contido)
+        '1)Funcional, 2)Ano, 3)PTRES, 4) UG_Executora, 5)GND, 6)PI, 7) Descricao do PI
+        '8)15(VL_Provisao_Recebida), 9)16(VL_Provisao_Concedida), 10)18(VL_Destacado), 11)19(VL_Disponivel),
+        '12)20(VL_Contido)
         
         GoSub ConferirColunasValores
         GoSub FormatarCabecalho
@@ -5021,21 +5017,23 @@ Sub TB_IMP_DISPONIVELSRE(lm As Integer)
             
             'Armazenar a informação da rubrica da linha em questão
             sFuncional = FormatarFuncional(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value)
-            sDescricaoPO = Trim(Left(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).Value, 255))
-            sPI = FormatarCodMT(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value, Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value, Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value)
+            If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value) <= 3 Then
+               sPI = "MT99999"
+            Else
+                sPI = FormatarCodMT(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value, Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value, 2)
+            End If
                         
             If sFuncional <> "" Then
                 'Armazenar a informação da rubrica da linha em questão
                 Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = sFuncional
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).Value = sDescricaoPO
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = sPI
+                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = sPI
                 
                 'atribuindo valor zero onde não existe nada
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).Value = 0
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = 0
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = 0
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = 0
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = 0
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = 0
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = 0
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = 0
             End If
         
         'Fim do Loop 1.1: Procurar a primeira linha com os dados (tratamento de arquivos nos quais a legenda possui mais de uma linha)
@@ -5047,50 +5045,50 @@ Sub TB_IMP_DISPONIVELSRE(lm As Integer)
     End If
     
 ConferirColunasValores:
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value <> 15 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).Value <> 15 Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).Value = "VL_Provisao_Recebida"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 8), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 8), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 8), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value <> 16 Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = "VL_Provisao_Concedida"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 9), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value <> 18 Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = "VL_Destacado"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 10), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 10), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 10), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value <> 19 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Provisao_Recebida"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Disponivel"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 11), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 11), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 11), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value <> 16 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value <> 20 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Provisao_Concedida"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Contido"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value <> 18 Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Destacado"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value <> 19 Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Disponivel"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value <> 20 Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Contido"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
    
 : Return
@@ -5101,22 +5099,19 @@ FormatarCabecalho:
     Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value = "Ano"
     Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "PTRES"
     Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "UG Executora"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = "RP"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = "GND"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 7).Value = "PO"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).Value = "Descrição do PO"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = "PI"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = "Descrição do PI"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Provisao_Recebida"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Provisao_Concedida"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Destacado"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Disponivel"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Contido"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = "GND"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = "PI"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 7).Value = "Descrição do PI"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).Value = "VL_Provisao_Recebida"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = "VL_Provisao_Concedida"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = "VL_Destacado"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Disponivel"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Contido"
    
 : Return
 
 LimparArquivo:
-    Columns(10).EntireColumn.Select
+    Columns(7).EntireColumn.Select
     Selection.Delete Shift:=xlDown
     
 : Return
@@ -5613,12 +5608,12 @@ Sub TB_IMP_NATUREZA_REC(lm As Integer)
         iLinha = 1
                    
         'Estrutura do arquivo:
-        '1)Funcional, 2)Ano, 3)PTRES, 4)RPrimario, 5)Natureza, 6)FonteSOF 7)CatEco, 8)GND, 9)ModDesp, 10)Elemento,
-        '11)9(VL_Orc_Ini), 12)10(VL_Cred_Sup), 13)11(VL_Cred_Ext), 14)12(VL_Cred_Esp), 15)13(VL_Orc_Aut), 16)14(VL_Cred_Can),
-        '17)19(VL_Disponivel), 18)20(VL_Contido), 19)23(VL_Empenhado), 20)25(VL_Liquidado), 21)26(VL_Pago),
-        '22)35(RP_Pro_Inscrito), 23)36(RP_Pro_Reinscrito), 24)37(RP_Pro_Cancelado), 25)38(RP_Pro_Pago), 26)39(RP_Pro_APagar),
-        '27)40(RP_NPro_Inscrito), 28)41(RP_NPro_Reinscrito), 29)42(RP_NPro_Cancelado), 30)43(RP_NPro_ALiquidar),
-        '31)44(RP_NPro_Liquidado), 32)45(RP_NPro_Liq_APagar), 33)46(RP_NPro_Pago), 34)47(RP_NPro_APagar), 35)48(RP_NPro_Bloquedo)
+        '1)Funcional, 2)Ano, 3)PTRES, 4)Natureza, 5)FonteSOF 6)CatEco, 7)GND, 8)ModDesp, 9)Elemento,
+        '10)9(VL_Orc_Ini), 11)10(VL_Cred_Sup), 12)11(VL_Cred_Ext), 13)12(VL_Cred_Esp), 14)13(VL_Orc_Aut), 15)14(VL_Cred_Can),
+        '16)19(VL_Disponivel), 17)20(VL_Contido), 18)23(VL_Empenhado), 19)25(VL_Liquidado), 20)26(VL_Pago),
+        '21)35(RP_Pro_Inscrito), 22)36(RP_Pro_Reinscrito), 23)37(RP_Pro_Cancelado), 24)38(RP_Pro_Pago), 25)39(RP_Pro_APagar),
+        '26)40(RP_NPro_Inscrito), 27)41(RP_NPro_Reinscrito), 28)42(RP_NPro_Cancelado), 29)43(RP_NPro_ALiquidar),
+        '30)44(RP_NPro_Liquidado), 31)45(RP_NPro_Liq_APagar), 32)46(RP_NPro_Pago), 33)47(RP_NPro_APagar), 34)48(RP_NPro_Bloquedo)
         
         GoSub ConferirColunasValores
         GoSub FormatarCabecalho
@@ -5632,18 +5627,17 @@ Sub TB_IMP_NATUREZA_REC(lm As Integer)
             'Armazenar a informação da rubrica da linha em questão
             sFuncional = FormatarFuncional(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value)
             sAno = Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value
-            sRP = Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value
-            sNatureza = Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value, 1, 1) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value, 2, 1) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value, 3, 2) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value, 5, 2)
-            sFonteSOF = Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value, 1, 4) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value, 5, 6)
+            sNatureza = Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 1, 1) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 2, 1) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 3, 2) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 5, 2)
+            sFonteSOF = Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value, 1, 4) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value, 5, 6)
                         
             If sFuncional <> "" Then
                 'Armazenar a informação da rubrica da linha em questão
                 Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = sFuncional
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = sRP
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = sNatureza
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = CStr(sFonteSOF)
+                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = sNatureza
+                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = CStr(sFonteSOF)
                
                 'atribuindo valor zero onde não existe nada
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = 0
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = 0
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = 0
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = 0
@@ -5668,7 +5662,6 @@ Sub TB_IMP_NATUREZA_REC(lm As Integer)
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).Value = 0
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).Value = 0
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).Value = 0
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 35).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 35).Value = 0
             End If
         
         'Fim do Loop 1.1: Procurar a primeira linha com os dados (tratamento de arquivos nos quais a legenda possui mais de uma linha)
@@ -5681,234 +5674,234 @@ Sub TB_IMP_NATUREZA_REC(lm As Integer)
     
 ConferirColunasValores:
     'apenas formatando a coluna Fonte Sof
-    Columns(6).NumberFormat = "@"
-    Columns(6).HorizontalAlignment = xlHAlignLeft
-    Columns(6).VerticalAlignment = xlVAlignTop
+    Columns(5).NumberFormat = "@"
+    Columns(5).HorizontalAlignment = xlHAlignLeft
+    Columns(5).VerticalAlignment = xlVAlignTop
     
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value <> 9 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value <> 9 Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = "VL_Orc_Ini"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 10), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 10), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 10), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value <> 10 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Orc_Ini"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Cred_Sup"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 11), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 11), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 11), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value <> 10 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value <> 11 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Cred_Sup"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Cred_Esp"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value <> 11 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value <> 12 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Est"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Ext"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value <> 12 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value <> 13 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Cred_Ext"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Orc_Aut"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value <> 13 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value <> 14 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Orc_Aut"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Cred_Can"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value <> 14 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value <> 19 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value = "VL_Cred_Can"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value = "VL_Disponivel"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 16), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 16), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 16), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value <> 19 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value <> 20 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value = "VL_Disponivel"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value = "VL_Contido"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 17), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 17), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 17), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value <> 20 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value <> 23 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value = "VL_Contido"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value = "VL_Empenhado"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 18), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 18), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 18), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value <> 23 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value <> 25 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value = "VL_Empenhado"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value = "VL_Liquidado"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 19), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 19), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 19), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 20).Value <> 25 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 20).Value <> 28 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 20).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 20).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 20).Value = "VL_Liquidado"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 20).Value = "VL_Pago"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 20), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 20), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 20), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 21).Value <> 28 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 21).Value <> 35 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 21).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 21).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 21).Value = "VL_Pago"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 21).Value = "RP_Pro_Inscrito"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 21), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 21), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 21), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 22).Value <> 35 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 22).Value <> 36 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 22).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 22).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 22).Value = "RP_Pro_Inscrito"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 22).Value = "RP_Pro_Reinscrito"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 22), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 22), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 22), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 23).Value <> 36 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 23).Value <> 37 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 23).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 23).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 23).Value = "RP_Pro_Reinscrito"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 23).Value = "RP_Pro_Cancelado"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 23), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 23), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 23), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 24).Value <> 37 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 24).Value <> 38 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 24).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 24).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 24).Value = "RP_Pro_Cancelado"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 24).Value = "RP_Pro_Pago"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 24), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 24), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 24), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 25).Value <> 38 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 25).Value <> 39 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 25).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 25).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 25).Value = "RP_Pro_Pago"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 25).Value = "RP_Pro_APagar"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 25), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 25), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 25), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 26).Value <> 39 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 26).Value <> 40 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 26).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 26).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 26).Value = "RP_Pro_APagar"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 26).Value = "RP_NPro_Inscrito"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 26), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 26), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 26), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 27).Value <> 40 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 27).Value <> 41 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 27).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 27).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 27).Value = "RP_NPro_Inscrito"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 27).Value = "RP_NPro_Reinscrito"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 27), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 27), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 27), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 28).Value <> 41 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 28).Value <> 42 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 28).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 28).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 28).Value = "RP_NPro_Reinscrito"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 28).Value = "RP_NPro_Cancelado"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 28), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 28), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 28), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 29).Value <> 42 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 29).Value <> 43 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 29).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 29).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 29).Value = "RP_NPro_Cancelado"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 29).Value = "RP_NPro_ALiquidar"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 29), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 29), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 29), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 30).Value <> 43 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 30).Value <> 44 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 30).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 30).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 30).Value = "RP_NPro_ALiquidar"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 30).Value = "RP_NPro_Liquidado"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 30), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 30), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 30), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 31).Value <> 44 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 31).Value <> 45 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 31).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 31).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 31).Value = "RP_NPro_Liquidado"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 31).Value = "RP_NPro_Liq_APagar"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 31), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 31), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 31), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).Value <> 45 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).Value <> 46 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).Value = "RP_NPro_Liq_APagar"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).Value = "RP_NPro_Pago"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 32), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 32), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 32), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).Value <> 46 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).Value <> 47 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).Value = "RP_NPro_Pago"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).Value = "RP_NPro_APagar"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 33), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 33), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 33), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).Value <> 47 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).Value <> 48 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).Value = "RP_NPro_APagar"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).Value = "RP_NPro_Bloqueado"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 34), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 34), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 34), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 35).Value <> 48 Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 35).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 35).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 35).Value = "RP_NPro_Bloqueado"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 35), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 35), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 35), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
      
 : Return
@@ -5919,38 +5912,37 @@ FormatarCabecalho:
     Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = "Funcional"
     Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value = "Ano"
     Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "PTRES"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "RP"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = "Natureza"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = "FonteSOF"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 7).Value = "CatEco"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).Value = "GND"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = "ModDesp"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = "Elemento"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Orc_Ini"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Cred_Sup"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Esp"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Cred_Ext"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Orc_Aut"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value = "VL_Cred_Can"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value = "VL_Disponivel"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value = "VL_Contido"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value = "VL_Empenhado"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 20).Value = "VL_Liquidado"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 21).Value = "VL_Pago"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 22).Value = "RP_Pro_Inscrito"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 23).Value = "RP_Pro_Reinscrito"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 24).Value = "RP_Pro_Cancelado"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 25).Value = "RP_Pro_Pago"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 26).Value = "RP_Pro_APagar"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 27).Value = "RP_NPro_Inscrito"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 28).Value = "RP_NPro_Reinscrito"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 29).Value = "RP_NPro_Cancelado"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 30).Value = "RP_NPro_ALiquidar"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 31).Value = "RP_NPro_Liquidado"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).Value = "RP_NPro_Liq_APagar"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).Value = "RP_NPro_Pago"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).Value = "RP_NPro_APagar"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 35).Value = "RP_NPro_Bloquedo"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "Natureza"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = "FonteSOF"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = "CatEco"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 7).Value = "GND"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).Value = "ModDesp"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = "Elemento"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = "VL_Orc_Ini"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Cred_Sup"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Cred_Esp"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Ext"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Orc_Aut"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Cred_Can"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value = "VL_Disponivel"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value = "VL_Contido"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value = "VL_Empenhado"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value = "VL_Liquidado"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 20).Value = "VL_Pago"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 21).Value = "RP_Pro_Inscrito"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 22).Value = "RP_Pro_Reinscrito"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 23).Value = "RP_Pro_Cancelado"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 24).Value = "RP_Pro_Pago"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 25).Value = "RP_Pro_APagar"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 26).Value = "RP_NPro_Inscrito"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 27).Value = "RP_NPro_Reinscrito"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 28).Value = "RP_NPro_Cancelado"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 29).Value = "RP_NPro_ALiquidar"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 30).Value = "RP_NPro_Liquidado"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 31).Value = "RP_NPro_Liq_APagar"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).Value = "RP_NPro_Pago"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).Value = "RP_NPro_APagar"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).Value = "RP_NPro_Bloquedo"
         
 : Return
 
@@ -6004,12 +5996,12 @@ Sub TB_IMP_NATUREZA_PTRES(lm As Integer)
         iLinha = 1
                    
         'Estrutura do arquivo:
-        '1)Funcional, 2)Ano, 3)PTRES, 4)RPrimario, 5)Natureza, 6)FonteSOF 7)CatEco, 8)GND, 9)ModDesp, 10)Elemento,
-        '11)9(VL_Orc_Ini), 12)10(VL_Cred_Sup), 13)11(VL_Cred_Ext), 14)12(VL_Cred_Esp), 15)13(VL_Orc_Aut), 16)14(VL_Cred_Can),
-        '17)19(VL_Disponivel), 18)20(VL_Contido), 19)23(VL_Empenhado), 20)25(VL_Liquidado), 21)26(VL_Pago),
-        '22)35(RP_Pro_Inscrito), 23)36(RP_Pro_Reinscrito), 24)37(RP_Pro_Cancelado), 25)38(RP_Pro_Pago), 26)39(RP_Pro_APagar),
-        '27)40(RP_NPro_Inscrito), 28)41(RP_NPro_Reinscrito), 29)42(RP_NPro_Cancelado), 30)43(RP_NPro_ALiquidar),
-        '31)44(RP_NPro_Liquidado), 32)45(RP_NPro_Liq_APagar), 33)46(RP_NPro_Pago), 34)47(RP_NPro_APagar), 35)48(RP_NPro_Bloquedo)
+        '1)Funcional, 2)Ano, 3)PTRES, 4)Natureza, 5)FonteSOF 6)CatEco, 7)GND, 8)ModDesp, 9)Elemento,
+        '10)9(VL_Orc_Ini), 11)10(VL_Cred_Sup), 12)11(VL_Cred_Ext), 13)12(VL_Cred_Esp), 14)13(VL_Orc_Aut), 15)14(VL_Cred_Can),
+        '16)19(VL_Disponivel), 17)20(VL_Contido), 18)23(VL_Empenhado), 19)25(VL_Liquidado), 20)26(VL_Pago),
+        '21)35(RP_Pro_Inscrito), 22)36(RP_Pro_Reinscrito), 23)37(RP_Pro_Cancelado), 24)38(RP_Pro_Pago), 25)39(RP_Pro_APagar),
+        '26)40(RP_NPro_Inscrito), 27)41(RP_NPro_Reinscrito), 28)42(RP_NPro_Cancelado), 29)43(RP_NPro_ALiquidar),
+        '30)44(RP_NPro_Liquidado), 31)45(RP_NPro_Liq_APagar), 32)46(RP_NPro_Pago), 33)47(RP_NPro_APagar), 34)48(RP_NPro_Bloquedo)
         
         GoSub ConferirColunasValores
         GoSub FormatarCabecalho
@@ -6023,18 +6015,17 @@ Sub TB_IMP_NATUREZA_PTRES(lm As Integer)
             'Armazenar a informação da rubrica da linha em questão
             sFuncional = FormatarFuncional(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value)
             sAno = Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value
-            sRP = Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value
-            sNatureza = Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value, 1, 1) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value, 2, 1) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value, 3, 2) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value, 5, 2)
-            sFonteSOF = Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value, 1, 4) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value, 5, 6)
+            sNatureza = Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 1, 1) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 2, 1) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 3, 2) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value, 5, 2)
+            sFonteSOF = Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value, 1, 4) + "." + Mid(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value, 5, 6)
                         
             If sFuncional <> "" Then
                 'Armazenar a informação da rubrica da linha em questão
                 Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = sFuncional
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = sRP
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = sNatureza
-                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = CStr(sFonteSOF)
+                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = sNatureza
+                Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = CStr(sFonteSOF)
                
                 'atribuindo valor zero onde não existe nada
+                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = 0
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = 0
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = 0
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = 0
@@ -6059,7 +6050,6 @@ Sub TB_IMP_NATUREZA_PTRES(lm As Integer)
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).Value = 0
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).Value = 0
                 If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).Value = 0
-                If Len(Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 35).Value) = 0 Then Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 35).Value = 0
             End If
         
         'Fim do Loop 1.1: Procurar a primeira linha com os dados (tratamento de arquivos nos quais a legenda possui mais de uma linha)
@@ -6072,234 +6062,234 @@ Sub TB_IMP_NATUREZA_PTRES(lm As Integer)
     
 ConferirColunasValores:
     'apenas formatando a coluna Fonte Sof
-    Columns(6).NumberFormat = "@"
-    Columns(6).HorizontalAlignment = xlHAlignLeft
-    Columns(6).VerticalAlignment = xlVAlignTop
+    Columns(5).NumberFormat = "@"
+    Columns(5).HorizontalAlignment = xlHAlignLeft
+    Columns(5).VerticalAlignment = xlVAlignTop
     
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value <> 9 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value <> 9 Then
+        'Inserir coluna empurrando para direita
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).EntireColumn.Insert
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Select
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = "VL_Orc_Ini"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 10), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 10), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
+        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 10), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
+    End If
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value <> 10 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Orc_Ini"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Cred_Sup"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 11), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 11), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 11), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value <> 10 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value <> 11 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Cred_Sup"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Cred_Esp"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 12), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value <> 11 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value <> 12 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Esp"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Ext"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 13), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value <> 12 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value <> 13 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Cred_Ext"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Orc_Aut"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 14), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value <> 13 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value <> 14 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Orc_Aut"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Cred_Can"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 15), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value <> 14 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value <> 19 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value = "VL_Cred_Can"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value = "VL_Disponivel"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 16), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 16), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 16), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value <> 19 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value <> 20 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value = "VL_Disponivel"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value = "VL_Contido"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 17), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 17), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 17), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value <> 20 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value <> 23 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value = "VL_Contido"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value = "VL_Empenhado"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 18), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 18), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 18), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value <> 23 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value <> 25 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value = "VL_Empenhado"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value = "VL_Liquidado"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 19), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 19), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 19), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 20).Value <> 25 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 20).Value <> 28 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 20).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 20).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 20).Value = "VL_Liquidado"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 20).Value = "VL_Pago"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 20), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 20), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 20), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 21).Value <> 28 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 21).Value <> 35 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 21).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 21).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 21).Value = "VL_Pago"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 21).Value = "RP_Pro_Inscrito"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 21), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 21), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 21), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 22).Value <> 35 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 22).Value <> 36 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 22).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 22).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 22).Value = "RP_Pro_Inscrito"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 22).Value = "RP_Pro_Reinscrito"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 22), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 22), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 22), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 23).Value <> 36 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 23).Value <> 37 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 23).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 23).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 23).Value = "RP_Pro_Reinscrito"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 23).Value = "RP_Pro_Cancelado"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 23), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 23), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 23), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 24).Value <> 37 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 24).Value <> 38 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 24).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 24).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 24).Value = "RP_Pro_Cancelado"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 24).Value = "RP_Pro_Pago"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 24), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 24), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 24), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 25).Value <> 38 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 25).Value <> 39 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 25).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 25).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 25).Value = "RP_Pro_Pago"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 25).Value = "RP_Pro_APagar"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 25), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 25), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 25), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 26).Value <> 39 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 26).Value <> 40 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 26).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 26).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 26).Value = "RP_Pro_APagar"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 26).Value = "RP_NPro_Inscrito"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 26), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 26), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 26), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 27).Value <> 40 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 27).Value <> 41 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 27).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 27).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 27).Value = "RP_NPro_Inscrito"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 27).Value = "RP_NPro_Reinscrito"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 27), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 27), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 27), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 28).Value <> 41 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 28).Value <> 42 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 28).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 28).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 28).Value = "RP_NPro_Reinscrito"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 28).Value = "RP_NPro_Cancelado"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 28), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 28), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 28), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 29).Value <> 42 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 29).Value <> 43 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 29).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 29).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 29).Value = "RP_NPro_Cancelado"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 29).Value = "RP_NPro_ALiquidar"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 29), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 29), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 29), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 30).Value <> 43 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 30).Value <> 44 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 30).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 30).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 30).Value = "RP_NPro_ALiquidar"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 30).Value = "RP_NPro_Liquidado"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 30), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 30), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 30), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 31).Value <> 44 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 31).Value <> 45 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 31).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 31).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 31).Value = "RP_NPro_Liquidado"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 31).Value = "RP_NPro_Liq_APagar"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 31), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 31), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 31), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).Value <> 45 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).Value <> 46 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).Value = "RP_NPro_Liq_APagar"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).Value = "RP_NPro_Pago"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 32), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 32), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 32), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).Value <> 46 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).Value <> 47 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).Value = "RP_NPro_Pago"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).Value = "RP_NPro_APagar"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 33), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 33), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 33), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).Value <> 47 Then
+    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).Value <> 48 Then
         'Inserir coluna empurrando para direita
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).EntireColumn.Insert
         Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).Value = "RP_NPro_APagar"
+        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).Value = "RP_NPro_Bloqueado"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 34), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 34), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
         Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 34), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
-    End If
-    If Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 35).Value <> 48 Then
-        'Inserir coluna empurrando para direita
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 35).EntireColumn.Insert
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 35).Select
-        Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 35).Value = "RP_NPro_Bloqueado"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 35), Selection.End(xlDown)).NumberFormat = "#,##0.00_);[Red](#,##0.00)"
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 35), Selection.End(xlDown)).HorizontalAlignment = xlHAlignRight
-        Workbooks(sArquivo).Worksheets(1).Range(Cells(iLinha + 1, 35), Selection.End(xlDown)).VerticalAlignment = xlVAlignTop
     End If
      
 : Return
@@ -6310,38 +6300,37 @@ FormatarCabecalho:
     Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 1).Value = "Funcional"
     Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 2).Value = "Ano"
     Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 3).Value = "PTRES"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "RP"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = "Natureza"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = "FonteSOF"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 7).Value = "CatEco"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).Value = "GND"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = "ModDesp"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = "Elemento"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Orc_Ini"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Cred_Sup"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Esp"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Cred_Ext"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Orc_Aut"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value = "VL_Cred_Can"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value = "VL_Disponivel"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value = "VL_Contido"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value = "VL_Empenhado"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 20).Value = "VL_Liquidado"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 21).Value = "VL_Pago"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 22).Value = "RP_Pro_Inscrito"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 23).Value = "RP_Pro_Reinscrito"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 24).Value = "RP_Pro_Cancelado"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 25).Value = "RP_Pro_Pago"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 26).Value = "RP_Pro_APagar"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 27).Value = "RP_NPro_Inscrito"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 28).Value = "RP_NPro_Reinscrito"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 29).Value = "RP_NPro_Cancelado"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 30).Value = "RP_NPro_ALiquidar"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 31).Value = "RP_NPro_Liquidado"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).Value = "RP_NPro_Liq_APagar"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).Value = "RP_NPro_Pago"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).Value = "RP_NPro_APagar"
-    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 35).Value = "RP_NPro_Bloquedo"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 4).Value = "Natureza"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 5).Value = "FonteSOF"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 6).Value = "CatEco"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 7).Value = "GND"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 8).Value = "ModDesp"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 9).Value = "Elemento"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 10).Value = "VL_Orc_Ini"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 11).Value = "VL_Cred_Sup"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 12).Value = "VL_Cred_Esp"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 13).Value = "VL_Cred_Ext"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 14).Value = "VL_Orc_Aut"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 15).Value = "VL_Cred_Can"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 16).Value = "VL_Disponivel"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 17).Value = "VL_Contido"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 18).Value = "VL_Empenhado"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 19).Value = "VL_Liquidado"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 20).Value = "VL_Pago"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 21).Value = "RP_Pro_Inscrito"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 22).Value = "RP_Pro_Reinscrito"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 23).Value = "RP_Pro_Cancelado"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 24).Value = "RP_Pro_Pago"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 25).Value = "RP_Pro_APagar"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 26).Value = "RP_NPro_Inscrito"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 27).Value = "RP_NPro_Reinscrito"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 28).Value = "RP_NPro_Cancelado"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 29).Value = "RP_NPro_ALiquidar"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 30).Value = "RP_NPro_Liquidado"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 31).Value = "RP_NPro_Liq_APagar"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 32).Value = "RP_NPro_Pago"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 33).Value = "RP_NPro_APagar"
+    Workbooks(sArquivo).Worksheets(1).Cells(iLinha, 34).Value = "RP_NPro_Bloquedo"
         
 : Return
 
@@ -10780,4 +10769,3 @@ DeuErro:
     MsgBox "O Arquivo JUNTARVALORESNATUREZA() gerou erro: " + Error, vbCritical, "Erro na Execução da Macro"
     Exit Sub
 End Sub
-
