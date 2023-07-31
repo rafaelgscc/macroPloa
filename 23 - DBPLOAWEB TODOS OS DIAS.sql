@@ -42,12 +42,12 @@ SELECT * FROM OPENROWSET('Microsoft.ACE.OLEDB.12.0',
 'SELECT * FROM [EDIT_TB_IMP_NE_2023_0$]') 
 GO
 
-/* 5) Tabela Temporária Nota Empenho Detalhada 
+/*5) Tabela Temporária Nota Empenho Detalhada */
 INSERT INTO TB_IMP_NE
 SELECT * FROM OPENROWSET('Microsoft.ACE.OLEDB.12.0',
 'Excel 12.0; Database=\\10.100.10.174\ploa_carga\EDIT_TB_IMP_NE_2023_1.xlsx; HDR=YES; IMEX=1',
 'SELECT * FROM [EDIT_TB_IMP_NE_2023_1$]') 
-GO*/
+GO
 
 /* 6) Tabela Temporária de Execução */
 DELETE FROM [dbo].[TB_IMP_EXECUCAO]
@@ -388,7 +388,7 @@ INSERT INTO [dbo].[TB_IMP_EMPENHO]
 	WHERE NOT EXISTS(SELECT * FROM TB_IMP_EMPENHO E WHERE E.ContaCorrente = N.ContaCorrente)
 GO	
 
-/*Atualizando data de emissão, cnpj e Favorecido TODOS INDEPENDENTE DO EXERCÍCIO*/
+/*7)Atualizando data de emissão, cnpj e Favorecido TODOS INDEPENDENTE DO EXERCÍCIO*/
 UPDATE [dbo].[TB_IMP_EMPENHO]
    SET [DT_Emissao] = convert(date,N.[DT_String],103)
       ,[CNPJFavorecido] = N.CNPJFavorecido 
@@ -402,12 +402,13 @@ GO
 
 CREATE VIEW [VW_TEMP_NE]AS(
        SELECT E.ContaCorrente, ISNULL(SUM(E.RP_Pro_Pago + E.RP_NPro_Pago), 0) AS RP_Pago, ISNULL(SUM(E.RP_Pro_Cancelado + E.RP_NPro_Cancelado), 0) AS RP_Cancelado, 
-	          ISNULL(SUM(E.RP_Pro_Inscrito + E.RP_NPro_Liquidado), 0) AS RP_Liquidado 
-	   FROM TB_NE E GROUP BY E.ContaCorrente
+	   ISNULL(SUM(E.RP_Pro_Inscrito + E.RP_NPro_Liquidado), 0) AS RP_Liquidado 
+FROM TB_NE E 
+GROUP BY E.ContaCorrente
 )
 GO
 
-/*7) ATUALIZA NA TB_IMP_EMPENHO OS EMPENHOS EXISTENTES DE EXECÍCIOS ANTERIORES*/
+/*8) ATUALIZA NA TB_IMP_EMPENHO OS EMPENHOS EXISTENTES DE EXECÍCIOS ANTERIORES*/
 UPDATE [dbo].[TB_IMP_EMPENHO]
    SET [RP_Pago] = N.RP_Pago
       ,[RP_Cancelado] = N.RP_Cancelado
@@ -416,7 +417,7 @@ UPDATE [dbo].[TB_IMP_EMPENHO]
    WHERE I.Ano <= YEAR(GETDATE()-1)
 GO
 
-/*7) ATUALIZA NA TB_IMP_EMPENHO OS EMPENHOS EXISTENTES DE EXECÍCIOS ANTERIORES*/
+/*9) ATUALIZA NA TB_IMP_EMPENHO OS EMPENHOS EXISTENTES DE EXECÍCIOS ANTERIORES*/
 UPDATE [dbo].[TB_IMP_EMPENHO]
    SET [RP_NPro_ALiquidar] = ISNULL(E.RP_NPro_ALiquidar,0)
       ,[RP_Bloqueado] = ISNULL(E.RP_NPro_Bloqueado,0)
@@ -424,25 +425,18 @@ UPDATE [dbo].[TB_IMP_EMPENHO]
    WHERE I.Ano <= YEAR(GETDATE()-1)
 GO
 
-/*8) ATUALIZA NA TB_IMP_EMPENHO OS EMPENHOS DO EXERCICIO CORRENTE*/
+/*10) ATUALIZA NA TB_IMP_EMPENHO OS RAPS INSCRITOS*/
+UPDATE [dbo].[TB_IMP_EMPENHO]
+   SET [RP_Inscrito] = IIF((ISNULL((SELECT TOP 1 (N.RP_Pro_Inscrito + N.RP_NPro_Inscrito + N.RP_NPro_Reinscrito + N.RP_Pro_Reinscrito) FROM TB_NE N WHERE N.ContaCorrente = I.ContaCorrente ORDER BY N.AnoLancamento DESC),0) = 0 AND [RP_Inscrito] > 0), [RP_Inscrito], ISNULL((SELECT TOP 1 (N.RP_Pro_Inscrito + N.RP_NPro_Inscrito + N.RP_NPro_Reinscrito + N.RP_Pro_Reinscrito) FROM TB_NE N WHERE N.ContaCorrente = I.ContaCorrente ORDER BY N.AnoLancamento DESC),0))
+   FROM [DBPLOAWEB].[dbo].[TB_IMP_EMPENHO] I
+GO
+
+/*11) ATUALIZA NA TB_IMP_EMPENHO OS EMPENHOS DO EXERCICIO CORRENTE*/
 UPDATE [dbo].[TB_IMP_EMPENHO]
    SET [VL_Empenhado] = E.VL_Empenhado
       ,[VL_Liquidado] = E.VL_Liquidado
       ,[VL_Pago] = E.VL_Pago
    FROM [DBPLOAWEB].[dbo].[TB_IMP_EMPENHO] I INNER JOIN TB_NE E ON (E.ContaCorrente = I.ContaCorrente AND E.AnoLancamento = I.Ano)
-GO
-
-/*9) ATUALIZA NA TB_EMPENHO CONFORME TB_IMP_EMPENHO*/
-UPDATE [dbo].[TB_EMPENHO]
-   SET [VL_Empenhado] = I.VL_Empenhado
-      ,[VL_Liquidado] = I.VL_Liquidado
-      ,[VL_Pago] = I.VL_Pago
-	  ,[RP_Inscrito] = I.RP_Inscrito
-      ,[RP_Liquidado] = I.RP_Liquidado
-      ,[RP_Pago] = I.RP_Pago
-      ,[RP_Cancelado] = I.RP_Cancelado
-      ,[RP_Bloqueado] = I.RP_Bloqueado
-   FROM [DBPLOAWEB].[dbo].[TB_EMPENHO] E INNER JOIN TB_IMP_EMPENHO I ON (E.ContaCorrente = I.ContaCorrente)
 GO
 
 DELETE FROM [dbo].[TB_IMP_NE]
@@ -517,13 +511,13 @@ DROP TRIGGER [FK_TB_CRONOGRAMA_TB_FUCIONAL_PTRES_UPD2]
 GO
 
 INSERT INTO [dbo].[TB_FUNCIONAL_PTRES]
-       SELECT E.Funcional, E.Ano, E.PTRES, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '0 - Nenhuma', 0, 0, 0, 'A CLASSIFICAR', '', '', P.SiglaDir, 0, 0, '' 
+       SELECT E.Funcional, E.Ano, E.PTRES, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 0, 0, 'A CLASSIFICAR', '', '', P.SiglaDir, 0, 0, '' 
 	   FROM TB_IMP_UG_DESTAQUE E INNER JOIN TB_ETAPAS P ON (P.Funcional = E.Funcional AND P.Ano = E.Ano)
 	   WHERE NOT EXISTS(SELECT * FROM TB_FUNCIONAL_PTRES F WHERE F.Funcional = E.Funcional AND F.Ano = E.Ano AND F.PTRES = E.PTRES)
 GO
 
 INSERT INTO [dbo].[TB_FUNCIONAL_PTRES]
-       SELECT E.Funcional, E.Ano, E.PTRES, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '0 - Nenhuma', 0, 0, 0, E.DescricaoPO, '', '', P.SiglaDir, 0, 0, '' 
+       SELECT E.Funcional, E.Ano, E.PTRES, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 0, 0, E.DescricaoPO, '', '', P.SiglaDir, 0, 0, '' 
 	   FROM TB_IMP_EXECUCAO_PTRES E INNER JOIN TB_ETAPAS P ON (P.Funcional = E.Funcional AND P.Ano = E.Ano)
 	   WHERE NOT EXISTS(SELECT * FROM TB_FUNCIONAL_PTRES F WHERE F.Funcional = E.Funcional AND F.Ano = E.Ano AND F.PTRES = E.PTRES)
 GO
@@ -659,10 +653,6 @@ GO
 
 /***************** INICIANDO TB_IMP_NATUREZA_PTRES ***********************/
 
-/*************************************/
-/********ALTEREI AQUI ****************/
-/*************************************/
-
 IF EXISTS (SELECT * FROM sysobjects WHERE id = object_id('FK_TB_CRONOGRAMA_TB_FUCIONAL_PTRES_UPD') AND sysstat & 0xf = 8)
 DROP TRIGGER [FK_TB_CRONOGRAMA_TB_FUCIONAL_PTRES_UPD]
 GO
@@ -684,20 +674,20 @@ INSERT INTO [dbo].[TB_NATUREZAS]
 GO
 
 INSERT INTO [dbo].[TB_FUNCIONAL_PTRES]
-       SELECT E.Funcional, E.Ano, E.PTRES, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '0 - Nenhuma', 0, 0, 0, '', '', '', P.SiglaDir, 0, 0, '' 
+       SELECT E.Funcional, E.Ano, E.PTRES, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 0, 0, '', '', '', P.SiglaDir, 0, 0, '' 
 	   FROM TB_IMP_NATUREZA_PTRES E INNER JOIN TB_ETAPAS P ON (P.Funcional = E.Funcional AND P.Ano = E.Ano)
 	   WHERE NOT EXISTS(SELECT * FROM TB_FUNCIONAL_PTRES F WHERE F.Funcional = E.Funcional AND F.Ano = E.Ano AND F.PTRES = E.PTRES)
 GO
 
 INSERT INTO [dbo].[TB_NATUREZA_PTRES]
-     SELECT I.[Funcional], I.[Ano], I.[PTRES], I.[RPrimario], I.[Natureza], I.[FonteSOF], I.[CatEco], I.[GND]
+     SELECT I.[Funcional], I.[Ano], I.[PTRES], I.[Natureza], I.[FonteSOF], I.[CatEco], I.[GND]
            ,I.[ModDesp], I.[Elemento], I.[VL_Orc_Ini], I.[VL_Cred_Sup], I.[VL_Cred_Ext], I.[VL_Cred_Esp], I.[VL_Orc_Aut]
            ,I.[VL_Cred_Can], I.[VL_Disponivel], I.[VL_Contido], I.[VL_Empenhado], I.[VL_Liquidado], I.[VL_Pago]
            ,I.[RP_Pro_Inscrito], I.[RP_Pro_Reinscrito], I.[RP_Pro_Cancelado], I.[RP_Pro_Pago], I.[RP_Pro_APagar]
            ,I.[RP_NPro_Inscrito], I.[RP_NPro_Reinscrito], I.[RP_NPro_Cancelado], I.[RP_NPro_ALiquidar], I.[RP_NPro_Liquidado]
            ,I.[RP_NPro_Liq_APagar], I.[RP_NPro_Pago], I.[RP_NPro_APagar], I.[RP_NPro_Bloqueado],0,0,0,0,0,0,0
      FROM TB_IMP_NATUREZA_PTRES I
-     WHERE NOT EXISTS(SELECT * FROM TB_NATUREZA_PTRES P WHERE P.Funcional = I.Funcional AND P.Ano = I.Ano AND P.PTRES = I.PTRES AND P.RPrimario = I.RPrimario AND P.Natureza = I.Natureza AND P.FonteSOF = I.FonteSOF)
+     WHERE NOT EXISTS(SELECT * FROM TB_NATUREZA_PTRES P WHERE P.Funcional = I.Funcional AND P.Ano = I.Ano AND P.PTRES = I.PTRES AND P.Natureza = I.Natureza AND P.FonteSOF = I.FonteSOF)
 GO
 
 UPDATE [dbo].[TB_NATUREZA_PTRES]
@@ -726,7 +716,7 @@ UPDATE [dbo].[TB_NATUREZA_PTRES]
         ,[RP_NPro_Pago] = I.[RP_NPro_Pago]
         ,[RP_NPro_APagar] = I.[RP_NPro_APagar]
         ,[RP_NPro_Bloqueado] = I.[RP_NPro_Bloqueado]
-     FROM TB_NATUREZA_PTRES N INNER JOIN TB_IMP_NATUREZA_PTRES I ON (N.Funcional = I.Funcional AND N.Ano = I.Ano AND N.PTRES = I.PTRES AND N.RPrimario = I.RPrimario AND N.Natureza = I.Natureza AND N.FonteSOF = I.FonteSOF)
+     FROM TB_NATUREZA_PTRES N INNER JOIN TB_IMP_NATUREZA_PTRES I ON (N.Funcional = I.Funcional AND N.Ano = I.Ano AND N.PTRES = I.PTRES AND N.Natureza = I.Natureza AND N.FonteSOF = I.FonteSOF)
 GO
 
 SET ANSI_NULLS ON
@@ -760,7 +750,7 @@ CREATE TRIGGER [FK_TB_CRONOGRAMA_TB_FUCIONAL_PTRES_UPD2] ON [TB_CRONOGRAMA] FOR 
 GO
 
 DELETE FROM [dbo].[TB_IMP_NATUREZA_PTRES] 
-   WHERE EXISTS(SELECT * FROM TB_NATUREZA_PTRES N WHERE N.Funcional = TB_IMP_NATUREZA_PTRES.Funcional AND N.Ano = TB_IMP_NATUREZA_PTRES.Ano AND N.PTRES = TB_IMP_NATUREZA_PTRES.PTRES AND N.RPrimario = TB_IMP_NATUREZA_PTRES.RPrimario AND N.Natureza = TB_IMP_NATUREZA_PTRES.Natureza AND N.FonteSOF = TB_IMP_NATUREZA_PTRES.FonteSOF)
+   WHERE EXISTS(SELECT * FROM TB_NATUREZA_PTRES N WHERE N.Funcional = TB_IMP_NATUREZA_PTRES.Funcional AND N.Ano = TB_IMP_NATUREZA_PTRES.Ano AND N.PTRES = TB_IMP_NATUREZA_PTRES.PTRES AND N.Natureza = TB_IMP_NATUREZA_PTRES.Natureza AND N.FonteSOF = TB_IMP_NATUREZA_PTRES.FonteSOF)
 GO
 
 SELECT * FROM [dbo].[TB_IMP_NATUREZA_PTRES]
@@ -940,7 +930,7 @@ UPDATE [dbo].[TB_NATUREZA_PTRES]
 	  ,[VL_Cred_Bloq_Contido] = C.VL_Cred_Bloq_Contido
 	  ,[VL_Cred_Bloq_PreEmp] = C.VL_Cred_Bloq_PreEmp
 	  ,[VL_Cred_Bloq_Controle] = C.VL_Cred_Bloq_Controle
-   FROM TB_NATUREZA_PTRES E INNER JOIN TB_IMP_BLOQUEIO_NATUREZA C ON (E.Funcional = C.Funcional AND E.Ano = C.Ano AND E.PTRES = C.PTRES AND E.RPrimario = C.RPrimario AND E.Natureza = C.Natureza AND E.FonteSOF = C.FonteSOF)					     
+   FROM TB_NATUREZA_PTRES E INNER JOIN TB_IMP_BLOQUEIO_NATUREZA C ON (E.Funcional = C.Funcional AND E.Ano = C.Ano AND E.PTRES = C.PTRES AND E.Natureza = C.Natureza AND E.FonteSOF = C.FonteSOF)					     
 GO
 
 SET ANSI_NULLS ON
@@ -974,7 +964,7 @@ CREATE TRIGGER [FK_TB_CRONOGRAMA_TB_FUCIONAL_PTRES_UPD2] ON [TB_CRONOGRAMA] FOR 
 GO
 
 DELETE FROM [dbo].[TB_IMP_BLOQUEIO_NATUREZA]
-   WHERE EXISTS(SELECT * FROM TB_NATUREZA_PTRES C WHERE TB_IMP_BLOQUEIO_NATUREZA.Funcional = C.Funcional AND TB_IMP_BLOQUEIO_NATUREZA.Ano = C.Ano AND TB_IMP_BLOQUEIO_NATUREZA.PTRES = C.PTRES AND TB_IMP_BLOQUEIO_NATUREZA.RPrimario = C.RPrimario AND TB_IMP_BLOQUEIO_NATUREZA.Natureza = C.Natureza AND TB_IMP_BLOQUEIO_NATUREZA.FonteSOF = C.FonteSOF)
+   WHERE EXISTS(SELECT * FROM TB_NATUREZA_PTRES C WHERE TB_IMP_BLOQUEIO_NATUREZA.Funcional = C.Funcional AND TB_IMP_BLOQUEIO_NATUREZA.Ano = C.Ano AND TB_IMP_BLOQUEIO_NATUREZA.PTRES = C.PTRES AND TB_IMP_BLOQUEIO_NATUREZA.Natureza = C.Natureza AND TB_IMP_BLOQUEIO_NATUREZA.FonteSOF = C.FonteSOF)
 GO
 
 SELECT * FROM [dbo].[TB_IMP_BLOQUEIO_NATUREZA]
@@ -1188,9 +1178,7 @@ INSERT INTO [dbo].[TB_UG_EXECUTORA]
 GO
 
 INSERT INTO [dbo].[TB_DISPONIVELSRE]
-       SELECT I.Funcional, I.Ano, I.PTRES, I.UG_Executora, I.RPrimario, I.GND, I.PlanoOrcamentario,
-              I.DescricaoPO, I.CodMT, I.VL_Provisao_Recebida, I.VL_Provisao_Concedida, I.VL_Destacado,
-              I.VL_Disponivel, I.VL_Contido
+       SELECT I.Funcional, I.Ano, I.PTRES, I.UG_Executora, I.GND, I.CodMT, I.VL_Provisao_Recebida, I.VL_Provisao_Concedida, I.VL_Destacado, I.VL_Disponivel, I.VL_Contido
 	   FROM TB_IMP_DISPONIVELSRE I
 	   WHERE NOT EXISTS(SELECT * FROM TB_DISPONIVELSRE D WHERE D.Funcional = I.Funcional AND D.Ano = I.Ano AND D.PTRES = I.PTRES AND D.UG_Executora = I.UG_Executora AND D.GND = I.GND AND D.CodMT = I.CodMT)
      
@@ -1228,7 +1216,7 @@ INSERT INTO [dbo].[TB_LOA_DETALHADA]
 GO
 
 INSERT INTO [dbo].[TB_FUNCIONAL_PTRES]
-       SELECT E.Funcional, E.Ano, E.PTRES, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '0 - Nenhuma', 0, 0, 0, '', '', '', P.SiglaDir, 0, 0, '' 
+       SELECT E.Funcional, E.Ano, E.PTRES, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 0, 0, '', '', '', P.SiglaDir, 0, 0, '' 
 	   FROM TB_IMP_LOA_DETALHADA E INNER JOIN TB_ETAPAS P ON (P.Funcional = E.Funcional AND P.Ano = E.Ano)
 	   WHERE NOT EXISTS(SELECT * FROM TB_FUNCIONAL_PTRES F WHERE F.Funcional = E.Funcional AND F.Ano = E.Ano AND F.PTRES = E.PTRES)
 GO
@@ -1418,41 +1406,6 @@ GO
 SELECT * FROM TB_IMP_UG_DESTAQUE
 
 /***************** FINALIZANDO TB_IMP_UG_DESTAQUE **********************/
-
-/***************** INICIANDO TB_CGOR_PROGRAMACAO ******************************/
-
-DELETE FROM [dbo].[TB_CGOR_PROGRAMACAO]
-DECLARE @Mes as integer = 1
-WHILE (@Mes <= 12)
-BEGIN
-INSERT INTO [dbo].[TB_CGOR_PROGRAMACAO]
-	SELECT C.Processo
-		  ,C.Funcional
-		  ,C.Ano
-		  ,E.CodAcao
-	      ,@Mes AS Mes 
-		  ,(SELECT SUM(CASE @Mes
-				WHEN 1 THEN X.VL_Mes_01
-				WHEN 2 THEN X.VL_Mes_02
-				WHEN 3 THEN X.VL_Mes_03
-				WHEN 4 THEN X.VL_Mes_04
-				WHEN 5 THEN X.VL_Mes_05
-				WHEN 6 THEN X.VL_Mes_06
-				WHEN 7 THEN X.VL_Mes_07
-				WHEN 8 THEN X.VL_Mes_08
-				WHEN 9 THEN X.VL_Mes_09
-				WHEN 10 THEN X.VL_Mes_10
-				WHEN 11 THEN X.VL_Mes_11
-				WHEN 12 THEN X.VL_Mes_12
-				ELSE 0
-				END)  FROM TB_CRONOGRAMA X WHERE X.Processo = C.Processo AND X.Funcional = C.Funcional AND X.Ano = C.Ano) AS VL_Programado
-    FROM TB_CRONOGRAMA C INNER JOIN TB_ETAPAS E ON (E.Funcional = C.Funcional AND E.Ano = c.Ano)
-	GROUP BY C.Processo, C.Funcional, C.Ano, E.CodAcao
-    SET @Mes += 1
-END
-GO
-
-/***************** FINALIZANDO TB_CGOR_PROGRAMACAO **********************/
 
 /***************** INICIANDO TB_PARAMETRO ******************************/
 
